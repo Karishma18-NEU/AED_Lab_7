@@ -91,10 +91,16 @@ public class Lab7 {
             
     }
     
+    // @author Vardhana 
     private void runAnalysis(){
-        // find user with Most Likes
         helper.userWithMostLikes();
-        
         helper.getFiveMostLikedComment();
+        helper.getAverageLikesPerComment();
+        //helper.getFiveInactiveUsersByPostNum();
+        //helper.getFiveInactiveUsersByCreateCommentsNum();
+        helper.getPostByMostLikedComments();
+        helper.getPostByMostComments();
+        //helper.getFiveProactiveUsersByOverall();
+        //helper.getFiveInactiveUsersByOverall();
     }
 }
