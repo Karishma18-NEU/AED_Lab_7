@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import lab7.entities.Comment;
+import lab7.entities.Post;
 import lab7.entities.User;
 
 /**
@@ -81,5 +82,46 @@ public class AnalysisHelper {
         System.out.println("The average number of all comments is " + average_likes);
      }
    
+    // @author Vardhana
+    public void getPostByMostLikedComments(){
+        Map<Integer, Post> postHashMap = DataStore.getInstance().getPosts();
+        Map<Integer,Integer> tempPostHashMap = new HashMap<>();
+        for(Post p:postHashMap.values()){
+            for(Comment c:p.getComments()){
+            int likes = 0;
+            if(tempPostHashMap.containsKey(p.getPostId())){
+                likes = tempPostHashMap.get(p.getPostId());
+            }
+            likes+=c.getLikes();
+            tempPostHashMap.put(p.getPostId(), likes);
+            }
+        }
+        int max = 0;
+        int maxId = 0;
+        for(int id:tempPostHashMap.keySet()){
+            if(tempPostHashMap.get(id)>max){
+                max = tempPostHashMap.get(id);
+                maxId = id;
+            }
+        }
+         System.out.println("Post with most likes: " + max + "\n"
+                + postHashMap.get(maxId)+maxId);
+    }
     
+    // @author Vardhana
+    public void getPostByMostComments(){
+         Map<Integer, Post> postHashMap = DataStore.getInstance().getPosts();
+        List<Post> postList = new ArrayList<>(postHashMap.values());
+        
+        
+        Collections.sort(postList, new Comparator<Post>() {
+            @Override
+            public int compare(Post p1, Post p2) {
+                return p2.getComments().size()-p1.getComments().size();
+            }
+        });
+        
+        System.out.println("Post with most comments: "+postList.get(0).getComments().size()+"\n"
+                +postList.get(0));
+    }
 }
