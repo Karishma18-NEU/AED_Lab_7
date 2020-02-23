@@ -62,6 +62,15 @@ public class User {
         return "User{" + "id = " + id + ", firstName = " + firstName + ", lastName = " + lastName + ", no. of comments = " + comments.size() + '}';
     }
     
-    
+    public int getCommentsNum(){
+        return comments.size();
+    }
+     public int getLikesNum(){
+        int num = 0;
+        for(Comment c : comments){
+            num+=c.getLikes();
+        }
+        return num;
+    }
     
 }

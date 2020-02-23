@@ -17,6 +17,7 @@ import static java.util.stream.Collectors.toMap;
 import lab7.entities.Comment;
 import lab7.entities.Post;
 import lab7.entities.User;
+import lab7.utils.MapSorter;
 
 /**
  *
@@ -242,4 +243,23 @@ public class AnalysisHelper {
         return userPostCount;
     }
     
+    
+    //author Karishma Murde
+    private Map generateUsersProactiveMap(){
+        Map<Integer,Post> posts = DataStore.getInstance().getPosts();
+        Map<Integer,User> users = DataStore.getInstance().getUsers();
+       
+        Map<Integer,Integer> userProactiveCount = new LinkedHashMap<>();
+        for(User user : users.values()){
+            int comments_num = user.getCommentsNum();
+            int likes_num = user.getLikesNum();
+            Map<Integer,Integer> userPostCount = generateUserPostCount();
+            int posts_num = userPostCount.get(user.getId());
+           
+            int proactiveCount = comments_num + likes_num + posts_num;
+            userProactiveCount.put(user.getId(), proactiveCount);
+       }
+        
+        return userProactiveCount;
+    }
 }
