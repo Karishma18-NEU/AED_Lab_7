@@ -10,8 +10,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import static java.util.stream.Collectors.toMap;
 import lab7.entities.Comment;
 import lab7.entities.Post;
 import lab7.entities.User;
@@ -124,4 +126,84 @@ public class AnalysisHelper {
         System.out.println("Post with most comments: "+postList.get(0).getComments().size()+"\n"
                 +postList.get(0));
     }
+    
+    
+     // @author Shalini Chandra
+    
+    //****************************Top 5 inactive users based on total posts number******//
+      public void getPostByMostLikedComments(){
+        Map<Integer, Post> postHashMap = DataStore.getInstance().getPosts();
+        Map<Integer,Integer> tempPostHashMap = new HashMap<>();
+        for(Post p:postHashMap.values()){
+            for(Comment c:p.getComments()){
+            int likes = 0;
+            if(tempPostHashMap.containsKey(p.getPostId())){
+                likes = tempPostHashMap.get(p.getPostId());
+            }
+            likes+=c.getLikes();
+            tempPostHashMap.put(p.getPostId(), likes);
+            }
+        }
+        int max = 0;
+        int maxId = 0;
+        for(int id:tempPostHashMap.keySet()){
+            if(tempPostHashMap.get(id)>max){
+                max = tempPostHashMap.get(id);
+                maxId = id;
+            }
+        }
+         System.out.println("Post with most likes: " + max + "\n"
+                + postHashMap.get(maxId)+maxId);
+    }
+    
+    public void getPostByMostComments(){
+         Map<Integer, Post> postHashMap = DataStore.getInstance().getPosts();
+        List<Post> postList = new ArrayList<>(postHashMap.values());
+        
+        
+        Collections.sort(postList, new Comparator<Post>() {
+            @Override
+            public int compare(Post p1, Post p2) {
+                return p2.getComments().size()-p1.getComments().size();
+            }
+        });
+        
+        System.out.println("Post with most comments: "+postList.get(0).getComments().size()+"\n"
+                +postList.get(0));
+    }
+    
+    public void getFiveInactiveUsersByPostNum(){
+        
+        Map<Integer,Post> post = DataStore.getInstance().getPosts();
+        List<Post> postList = new ArrayList<>(post.values());
+        Map<Integer,Integer> userPostCount = new HashMap<>();
+     
+        for(Post siglePost : postList){
+            int userId = siglePost.getUserId();
+            if(!userPostCount.containsKey(userId)){
+                int postNum = 1;
+                userPostCount.put(userId, postNum);   
+            }else{
+                int postNum = userPostCount.get(userId);
+                userPostCount.put(userId, ++postNum);
+            }
+        }
+        
+        Map<Integer, Integer> sortedUserPostCount = userPostCount.entrySet()
+                .stream()
+                .sorted(Map.Entry.<Integer, Integer>comparingByValue())
+//                .forEach(System.out::println);
+                .collect(toMap(Map.Entry::getKey,
+                                Map.Entry::getValue, (e1,e2) -> e1, LinkedHashMap::new));
+        
+        System.out.println(sortedUserPostCount);
+        List<Integer> userList = new ArrayList<>(sortedUserPostCount.keySet());
+        System.out.println("Five most Inactive user by post number: ");
+        for(int i=0;i<5;i++){
+            System.out.print("#" + (i+1) +" UserId: " + userList.get(i) + " --- ");
+            System.out.println(DataStore.getInstance().getUsers().get(userList.get(i)));
+        }
+        
+    }
+    
 }
