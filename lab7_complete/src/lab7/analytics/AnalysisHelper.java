@@ -227,6 +227,19 @@ public class AnalysisHelper {
        }
        
     }
-    
+        
+        // author Karishma Murde
+        // 
+    private Map<Integer,Integer> generateUserPostCount(){
+        Map<Integer,Post> posts = DataStore.getInstance().getPosts();
+        Map<Integer,Integer> userPostCount = new HashMap<>();
+        for(Post post:posts.values()){
+            if(!userPostCount.containsKey(post.getUserId()))
+                userPostCount.put(post.getUserId(),1);
+            else
+                userPostCount.put(post.getUserId(),userPostCount.get(post.getUserId()).intValue()+1);
+        }
+        return userPostCount;
+    }
     
 }
