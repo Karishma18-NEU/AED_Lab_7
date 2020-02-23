@@ -65,4 +65,21 @@ public class AnalysisHelper {
             System.out.println(commentList.get(i));
         }
     }
+    
+    // @author Vardhana
+    public void getAverageLikesPerComment(){
+        Map<Integer,Comment> comments = DataStore.getInstance().getComments();
+        List<Comment> commentList = new ArrayList<>(comments.values());
+        double total_likes = 0;
+        int comment_num = commentList.size();
+        
+        for(Comment comment : commentList){
+            total_likes+=comment.getLikes();
+        }
+        
+        double average_likes = total_likes/comment_num;
+        System.out.println("The average number of all comments is " + average_likes);
+     }
+   
+    
 }
