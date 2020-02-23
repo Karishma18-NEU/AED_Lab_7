@@ -130,7 +130,7 @@ public class AnalysisHelper {
     
      // @author Shalini Chandra
     
-    //****************************Top 5 inactive users based on total posts number******//
+    //****************************Top 5 inactive users based on total posts number*******************//
     public void getFiveInactiveUsersByPostNum(){
         
         Map<Integer,Post> post = DataStore.getInstance().getPosts();
@@ -165,7 +165,7 @@ public class AnalysisHelper {
         
     }
     // @author Shalini Chandra
-    //******************Top 5 inactive users based on total comments they created***********//
+    //******************Top 5 inactive users based on total comments they created*********************//
     
     public void getFiveInactiveUsersByCreateCommentsNum(){
         Map<Integer, Comment> commentsMap = DataStore.getInstance().getComments();
@@ -211,6 +211,22 @@ public class AnalysisHelper {
         }
     }
     
+       // @author Shalini Chandra
+    //***********************Top 5 proactive users overall (sum of comments, posts and likes)********************//
+    
+       
+        public void getFiveProactiveUsersByOverall(){
+       Map<Integer,Integer> userProactiveCount = generateUsersProactiveMap();
+       
+       List<Map.Entry<Integer,Integer>> sortedMapList = MapSorter.sortMapByValueDescend(userProactiveCount);
+       System.out.println("Top 5 proactive users overall:");
+       for(int i = 0;i<5;i++){
+           Integer userID = sortedMapList.get(i).getKey();
+           Integer proactiveCount = sortedMapList.get(i).getValue();
+           System.out.printf("%d. user ID: %d ; active count: %d \n",i+1,userID,proactiveCount);
+       }
+       
+    }
     
     
 }
