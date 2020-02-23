@@ -107,4 +107,21 @@ public class AnalysisHelper {
          System.out.println("Post with most likes: " + max + "\n"
                 + postHashMap.get(maxId)+maxId);
     }
+    
+    // @author Vardhana
+    public void getPostByMostComments(){
+         Map<Integer, Post> postHashMap = DataStore.getInstance().getPosts();
+        List<Post> postList = new ArrayList<>(postHashMap.values());
+        
+        
+        Collections.sort(postList, new Comparator<Post>() {
+            @Override
+            public int compare(Post p1, Post p2) {
+                return p2.getComments().size()-p1.getComments().size();
+            }
+        });
+        
+        System.out.println("Post with most comments: "+postList.get(0).getComments().size()+"\n"
+                +postList.get(0));
+    }
 }
